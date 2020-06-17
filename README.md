@@ -12,7 +12,7 @@
 1.  下载jar包SpringEnhanceJPA /  0.0.1
 2.  引入包
 	compile group: 'cn.hutool', name: 'hutool-all', version:'4.1.15'
-	compile(group: 'commons-beanutils', name: 'commons-beanutils', version:'1.9.3')
+	compile group: 'commons-beanutils', name: 'commons-beanutils', version:'1.9.3'
 
 
 #### 使用说明
