@@ -23,9 +23,10 @@
 
 #### 使用说明
 
- **1.  enhance-x.x.x.jar下载到本地引入项目
-2.  创建ClassJpa查询文件
-3.ModelQuery参数说明** 
+1.  enhance-x.x.x.jar下载到本地引入项目
+ **使用方法1** 
+2. 创建ClassJpa查询文件
+3.ModelQuery参数说明
 
 - retrunClass = 添加返回值的类型，见下图findByVoteActivitieIdAndIsDeleteIsNull 第一个方法
 - value = 查询语句，或者方法return的值2选一也是查询语句（如2个都写value 优先与return） 见3，4个方法
@@ -37,8 +38,9 @@
 
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0622/160014_97be5fd8_341671.jpeg "Class查询.jpg")
- **4.创建interface查询文件
-5.使用JPA可以不用设置retrunClass
-6.没有注解ModelQuery的方法不会走定义对象查询** 
+ **使用方法2** 
+1.创建interface查询文件
+2.使用JPA可以不用设置retrunClass
+3.没有注解ModelQuery的方法不会走定义对象查询
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0622/161140_d0dc5aa8_341671.png "屏幕截图.png")
 
