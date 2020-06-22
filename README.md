@@ -26,8 +26,8 @@
 1.  enhance-x.x.x.jar下载到本地引入项目
 ###  **使用方法1** 
 
-2. 创建ClassJpa查询文件
-3.ModelQuery参数说明
+1. 创建ClassJpa查询文件
+2.ModelQuery参数说明
 
 - retrunClass = 添加返回值的类型，见下图findByVoteActivitieIdAndIsDeleteIsNull 第一个方法
 - value = 查询语句，或者方法return的值2选一也是查询语句（如2个都写value 优先与return） 见3，4个方法
