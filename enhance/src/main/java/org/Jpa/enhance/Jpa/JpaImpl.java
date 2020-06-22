@@ -2,6 +2,7 @@ package org.Jpa.enhance.Jpa;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.Jpa.enhance.util.ClassUtil;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.hibernate.transform.Transformers;
@@ -48,6 +49,11 @@ public class JpaImpl<T>  {
         if(returnList.size()>1){
             throw  new Exception("查询数据多于一条");
         }
+        if(ClassUtil.checkIsBasicsType(t)){
+            return (T) ConvertUtils.convert(returnList.get(0), t);
+        }
+
+
         return (T)returnList.get(0);
     }
 
@@ -132,6 +138,12 @@ public class JpaImpl<T>  {
             if(c.getTypeName().equals("java.util.HashMap")){
                 returnObject.add(map);
                 continue;
+            }
+
+            if(ClassUtil.checkIsBasicsType(c)){
+                Object o = map.get(map.keySet().iterator().next());
+                returnObject.add(o );
+                return returnObject;
             }
             returnObject.add(getObjectByClass(map,c));
         }

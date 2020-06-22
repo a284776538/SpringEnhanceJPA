@@ -1,5 +1,7 @@
 package org.Jpa.enhance.util;
 
+import org.apache.commons.beanutils.ConvertUtils;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -17,6 +19,32 @@ public class ClassUtil {
      */
     public static  Method getMethodByObject(Object executeObj ,String executeMethodName, Class[] parameterTypes ){
         return getMethodByClass(executeObj.getClass(),executeMethodName,parameterTypes);
+    }
+
+
+    /**
+     * 判断类型是不是基础类型
+     * @param t char，float，double，String ，char
+     * @return
+     */
+    public static  boolean checkIsBasicsType(Class t){
+        if(checkIsBasicsType(t.getTypeName())){
+            return true;
+        }
+        return false;
+    }
+    /**
+     * 判断类型是不是基础类型
+     * @param t char，float，double，String ，char
+     * @return
+     */
+    public static  boolean checkIsBasicsType(String t){
+        if(t.startsWith("java.lang")||t.equals("long")||t.equals("int")||
+                t.equals("float")||t.equals("double")||t.equals("char")
+        ){
+            return true;
+        }
+        return false;
     }
 
     /**

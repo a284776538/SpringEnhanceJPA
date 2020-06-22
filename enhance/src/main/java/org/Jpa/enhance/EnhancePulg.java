@@ -20,6 +20,7 @@ public class EnhancePulg implements ApplicationContextInitializer {
         GenericBeanDefinition JpaSqlAspectBeanDefinition  = new GenericBeanDefinition();
         JpaSqlAspectBeanDefinition.setBeanClassName("JpaSqlAspect");
         JpaSqlAspectBeanDefinition.setBeanClass(JpaSqlAspect.class);
+        JpaSqlAspectBeanDefinition.setLazyInit(true);
         configurableListableBeanFactory.registerBeanDefinition("JpaSqlAspect",JpaSqlAspectBeanDefinition);
 
 
