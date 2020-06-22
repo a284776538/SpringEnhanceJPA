@@ -15,6 +15,7 @@
 ```
  compile group: 'cn.hutool', name: 'hutool-all', version:'4.1.15'
  compile group: 'commons-beanutils', name: 'commons-beanutils', version:'1.9.3'
+ enhance-x.x.x.jar下载到本地引入项目
 ```
 
 
@@ -22,8 +23,6 @@
 
 
 #### 使用说明
-
-1.  enhance-x.x.x.jar下载到本地引入项目
 ###  **使用方法1** 
 
 1. 创建ClassJpa查询文件
