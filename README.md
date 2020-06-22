@@ -33,6 +33,7 @@
 - countQuery = 自己写count的sql与 countColumn 2选一，countQuery 优先与countColumn
 - nativeQuery =是否是sql 或者 是jsql false 为jsql,true sql，默认false
 - （注：使用方法的return可以自定义平拼接sql）
+- （注：使用long，Long等基本类型不需要指定retrunClass见下图方法2）
 
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0622/160014_97be5fd8_341671.jpeg "Class查询.jpg")
