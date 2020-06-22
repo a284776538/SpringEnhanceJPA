@@ -24,7 +24,8 @@
 #### 使用说明
 
 1.  enhance-x.x.x.jar下载到本地引入项目
- **使用方法1** 
+###  **使用方法1** 
+
 2. 创建ClassJpa查询文件
 3.ModelQuery参数说明
 
@@ -38,7 +39,8 @@
 
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0622/160014_97be5fd8_341671.jpeg "Class查询.jpg")
- **使用方法2** 
+###  **使用方法2** 
+
 1.创建interface查询文件
 2.使用JPA可以不用设置retrunClass
 3.没有注解ModelQuery的方法不会走定义对象查询
