@@ -41,8 +41,9 @@
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0622/160014_97be5fd8_341671.jpeg "Class查询.jpg")
 ###  **使用方法2** 
 
-1.创建interface查询文件
-2.使用JPA可以不用设置retrunClass
-3.没有注解ModelQuery的方法不会走定义对象查询
+- 1.创建interface查询文件
+- 2.使用JPA可以不用设置retrunClass
+- 3.没有注解ModelQuery的方法不会走定义对象查询
+
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0622/161140_d0dc5aa8_341671.png "屏幕截图.png")
 
