@@ -15,7 +15,7 @@
 ```
  compile group: 'cn.hutool', name: 'hutool-all', version:'4.1.15'
  compile group: 'commons-beanutils', name: 'commons-beanutils', version:'1.9.3'
- enhance-x.x.x.jar下载到本地引入项目
+ ejpa-x.x.x.jar下载到本地引入项目
 ```
 
 
