@@ -17,10 +17,10 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'idea'
 
 
-group = 'org.jpa'
+group = 'gitee.hongzihao'
 sourceCompatibility = '1.8'
 version = '0.0.1'
-archivesBaseName = 'enhance'
+archivesBaseName = 'ejpa'
 ext {
 	set('springCloudVersion', 'Greenwich.RELEASE')
 }

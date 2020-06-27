@@ -1,4 +1,4 @@
-package org.Jpa.enhance.annottation;
+package gitee.hongzihao.ejpa.annottation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -53,5 +53,8 @@ public @interface ModelQuery {
 	 * @return
 	 */
 	boolean nativeQuery() default false;
+
+
+	Class<?> test() default Object.class;
 
 }

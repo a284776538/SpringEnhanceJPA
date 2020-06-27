@@ -1,13 +1,13 @@
-package org.Jpa.enhance;
+package gitee.hongzihao.ejpa;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EnhanceApplication {
+public class EjpaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EnhanceApplication.class, args);
+		SpringApplication.run(EjpaApplication.class, args);
 	}
 
 }

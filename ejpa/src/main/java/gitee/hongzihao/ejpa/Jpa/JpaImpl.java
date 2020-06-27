@@ -1,4 +1,4 @@
-package org.Jpa.enhance.Jpa;
+package gitee.hongzihao.ejpa.Jpa;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;

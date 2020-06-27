@@ -1,8 +1,8 @@
-package org.Jpa.enhance.aop;
+package gitee.hongzihao.ejpa.aop;
 
 import cn.hutool.core.date.DateUtil;
-import org.Jpa.enhance.Jpa.JpaImpl;
-import org.Jpa.enhance.annottation.ModelQuery;
+import gitee.hongzihao.ejpa.Jpa.JpaImpl;
+import gitee.hongzihao.ejpa.annottation.ModelQuery;
 import org.Jpa.enhance.util.ClassUtil;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.aspectj.lang.JoinPoint;
@@ -42,7 +42,7 @@ public class JpaSqlAspect {
     private JpaImpl baseJpa;
 
     //拦截方法上有@Query
-    @Around("@annotation(org.Jpa.enhance.annottation.ModelQuery)")
+    @Around("@annotation(gitee.hongzihao.ejpa.annottation.ModelQuery)")
     public Object doAround(ProceedingJoinPoint point) throws Throwable {
         Object o = null;
         //如果是自定义查询
@@ -80,6 +80,7 @@ public class JpaSqlAspect {
     private Object modelQuery(JoinPoint joinPoint,String queryValue) throws  Exception{
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
+        method.getParameters();
         ModelQuery query =  method.getAnnotation(ModelQuery.class);
 //        Query query =  method.getAnnotation(Query.class);
         //如果有声明好的countSql就用声明的
