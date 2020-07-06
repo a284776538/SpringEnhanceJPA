@@ -55,6 +55,13 @@ public @interface ModelQuery {
 	boolean nativeQuery() default false;
 
 
+	/**
+	 * 是否修改
+	 * @return
+	 */
+	boolean modify() default false;
+
+
 	Class<?> test() default Object.class;
 
 }

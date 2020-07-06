@@ -1,2 +1,5 @@
 org.springframework.context.ApplicationContextInitializer=\
 gitee.hongzihao.ejpa.EnhancePulg
+
+#org.springframework.context.ApplicationListener=\
+#gitee.hongzihao.ejpa.run.EjpaRun

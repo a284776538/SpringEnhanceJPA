@@ -2,21 +2,15 @@ package gitee.hongzihao.ejpa.Jpa;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.Jpa.enhance.util.ClassUtil;
+import gitee.hongzihao.ejpa.util.ClassUtil;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.hibernate.transform.Transformers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.lang.reflect.Field;
 import java.sql.Timestamp;
 import java.util.*;
@@ -27,9 +21,14 @@ import java.util.stream.Collectors;
 public class JpaImpl<T>  {
 
 
+
     @PersistenceContext
     @Lazy
     protected EntityManager manager;
+
+
+
+
 
 
 
@@ -41,8 +40,8 @@ public class JpaImpl<T>  {
      * @return
      * @throws Exception
      */
-    public T findSql(String sql, Class t,boolean isNativeQuery) throws Exception {
-        List  returnList  = findBySql(sql, t,isNativeQuery);
+    public T findSql(String sql, Class t,boolean isNativeQuery,Map<String,Object> parameter ) throws Exception {
+        List  returnList  = findBySql(sql, t,isNativeQuery,parameter);
         if(returnList==null||returnList.size()<=0){
             return null;
         }
@@ -67,7 +66,7 @@ public class JpaImpl<T>  {
      * @return
      * @throws Exception
      */
-    public Page<?> findBySql(String sql, String countSql, Class c, boolean isNativeQuery, PageRequest pageRequest) throws Exception {
+    public Page<?> findBySql(String sql, String countSql, Class c, boolean isNativeQuery, PageRequest pageRequest,Map<String,Object> parameter ) throws Exception {
         // 第几页
         int cpage = pageRequest.getPageNumber();
         // 每页显示多少行
@@ -87,14 +86,18 @@ public class JpaImpl<T>  {
         countSql =countSql.replace("?#{#pageable}","");
         String limit = " limit "+(cpage*size) +","+size;
         sql = sql+limit;
-        Map<String,Object> data2 = (Map) findSql( countSql,  HashMap.class, isNativeQuery);
+        Map<String,Object> data2 = (Map) findSql( countSql,  HashMap.class, isNativeQuery,parameter);
+        //GROUP BY 的count会出现null的情况
+        if(data2==null&&countSql.toUpperCase().indexOf("GROUP")>=0){
+            return new PageImpl<>(new ArrayList<>(), pageRequest,0);
+        }
         Set<String> key = data2.keySet();
         int count = Integer.parseInt(data2.get(key.iterator().next()).toString());
         //总数如果=0就不执行下面数据的查询了
         if(count<=0){
             return new PageImpl<>(new ArrayList<>(), pageRequest,count);
         }
-        List<?> data =findBySql( sql,  c, isNativeQuery);
+        List<?> data =findBySql( sql,  c, isNativeQuery,parameter);
         return new PageImpl<>(data, pageRequest,count);
     }
 
@@ -106,15 +109,27 @@ public class JpaImpl<T>  {
      * @return
      * @throws Exception
      */
-    public List<?> findBySql(String sql, Class c,boolean isNativeQuery ) throws Exception {
+    public List<?> findBySql(String sql, Class c,boolean isNativeQuery ,Map<String,Object> parameter ) throws Exception {
         Query query=null;
+
+        if(!isNativeQuery){
+            query = manager.createQuery(sql);
+
+        }else{
+            query = manager.createNativeQuery(sql);
+        }
+        Set<String> keys =  parameter==null||parameter.keySet().size()<=0?null:parameter.keySet();
+        if(keys!=null){
+            for (String key :keys){
+                query.setParameter(key,parameter.get(key));
+            }
+        }
         if(!isNativeQuery){
             String limit = null;
             if(sql.indexOf("limit")>=0){
                 limit = sql.substring(sql.lastIndexOf("limit"));
                 sql =sql.substring(0,sql.lastIndexOf("limit"));
             }
-            query = manager.createQuery(sql);
             if(limit!=null){
                 String limitArray[]=limit.replace("limit","").replace(" ","").split(",");
                 int firstResult=Integer.parseInt(limitArray[0]);
@@ -123,9 +138,7 @@ public class JpaImpl<T>  {
                 query.setMaxResults(maxResults);
             }
             query.unwrap(org.hibernate.Query.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-
         }else{
-            query = manager.createNativeQuery(sql);
             query.unwrap(org.hibernate.SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         }
 
@@ -140,11 +153,11 @@ public class JpaImpl<T>  {
                 continue;
             }
 
-            if(ClassUtil.checkIsBasicsType(c)){
-                Object o = map.get(map.keySet().iterator().next());
-                returnObject.add(o );
-                return returnObject;
-            }
+//            if(ClassUtil.checkIsBasicsType(c)){
+//                Object o = map.get(map.keySet().iterator().next());
+//                returnObject.add(o );
+//                return returnObject;
+//            }
             returnObject.add(getObjectByClass(map,c));
         }
         return (List<?>)returnObject;
@@ -154,11 +167,18 @@ public class JpaImpl<T>  {
         JSONObject object = new JSONObject();
         List<Field> fields = ClassUtil.getAllField(c);
         Set<String> keys =  map.keySet();
+
         for (String key:keys) {
             Object value = map.get(key);
+
+            //如果是基础类型就直接返回
+            if(ClassUtil.checkIsBasicsType(c)){
+                return value;
+            }
             if(value==null){
                 continue;
             }
+
             String checkKey =key.replace("_","").toUpperCase();
 
             List<Field> checkField   = fields.stream().filter(f->f.getName().toUpperCase().equals(checkKey)).collect(Collectors.toList());

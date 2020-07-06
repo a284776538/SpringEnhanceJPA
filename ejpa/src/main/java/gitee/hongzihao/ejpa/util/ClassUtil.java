@@ -1,7 +1,11 @@
-package org.Jpa.enhance.util;
+package gitee.hongzihao.ejpa.util;
 
+import gitee.hongzihao.ejpa.annottation.GeneratedId;
 import org.apache.commons.beanutils.ConvertUtils;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -28,7 +32,7 @@ public class ClassUtil {
      * @return
      */
     public static  boolean checkIsBasicsType(Class t){
-        if(checkIsBasicsType(t.getTypeName())){
+        if(checkIsBasicsType(t.getTypeName().toLowerCase())){
             return true;
         }
         return false;
@@ -182,6 +186,30 @@ public class ClassUtil {
     }
 
     /**
+     * 根据注解获取字段
+     * @param c 检查的类
+     * @param annotation 过滤的注解
+     * @return
+     */
+    public static List<Field> getAllFieldByAnnotation(Class c, Class annotation) {
+        List<Field> fields = getAllField( c);
+        List<Field> returnFields = new ArrayList<>();
+        for (Field field: fields){
+            Annotation[]  annotations = field.getAnnotations();
+            if(annotations==null||annotations.length<=0){
+                continue;
+            }
+            for(Annotation anno:annotations){
+                if(anno.annotationType().equals(annotation) ){
+                    returnFields.add(field);
+                    break;
+                }
+            }
+        }
+        return returnFields;
+    }
+
+    /**
      * 获取所有字段
      * @param c
      * @return
@@ -224,10 +252,10 @@ public class ClassUtil {
         Object value = null;
         try {
             field.setAccessible(true);
-            field.get(executeObj);
+            value=  field.get(executeObj);
         } catch (Exception e) {
             // TODO Auto-generated catch block
-//            e.printStackTrace();
+            e.printStackTrace();
         }
         return value;
     }
@@ -250,4 +278,29 @@ public class ClassUtil {
         }
         return obj;
     }
+    /**
+     * 获取字段的值
+     * @param executeObj
+     * @param fieldName
+     * @return
+     */
+    public static void setValueByField(Object executeObj,  String fieldName,Object... args ) throws  Exception {
+        Method[] methods = executeObj.getClass().getMethods();
+        String setMethod = "set"+fieldName;
+        if(methods!=null&&methods.length<0){
+            throw  new Exception(executeObj.getClass().getName()+"找不到"+fieldName+"字段的set方法");
+        }
+        for(Method method:methods){
+            if(method.getName().toUpperCase().equals(setMethod.toUpperCase())){
+                try {
+                    method.invoke(executeObj,args);
+                    return;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        throw  new Exception(executeObj.getClass().getName()+"找不到"+fieldName+"字段的set方法");
+    }
+
 }
