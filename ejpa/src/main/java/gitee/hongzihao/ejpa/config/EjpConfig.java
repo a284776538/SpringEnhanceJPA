@@ -4,6 +4,7 @@ package gitee.hongzihao.ejpa.config;
 import gitee.hongzihao.ejpa.Jpa.JpaImpl;
 import gitee.hongzihao.ejpa.aop.JpaSaveAspect;
 import gitee.hongzihao.ejpa.aop.JpaSqlAspect;
+import gitee.hongzihao.ejpa.aop.JpaUpdateAspect;
 import gitee.hongzihao.ejpa.controller.JPAController;
 import gitee.hongzihao.ejpa.module.jpa.DistributedLockJpa;
 import gitee.hongzihao.ejpa.module.jpa.EjpaSlowQueryJpa;
@@ -85,6 +86,11 @@ public class EjpConfig {
     @Bean
     @Lazy
     public MysqlService getMysqlService(){ return  new MysqlServiceImpl(); }
+
+    @Bean
+    @Lazy
+    public JpaUpdateAspect getJpaUpdateAspect(){ return  new JpaUpdateAspect(); }
+
 
 
 }
