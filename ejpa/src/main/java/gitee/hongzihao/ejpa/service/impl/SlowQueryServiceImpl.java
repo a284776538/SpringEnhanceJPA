@@ -41,8 +41,6 @@ public class SlowQueryServiceImpl implements SlowQueryService {
     protected EjpaSlowQueryJpa ejpaSlowQueryJpa;
 
 
-
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void save(String method, String sql, long time) {
@@ -78,6 +76,48 @@ public class SlowQueryServiceImpl implements SlowQueryService {
            manager.createNativeQuery(delete).executeUpdate();
        }
 
+
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void initSql() {
+        String sql = "CREATE TABLE `ejpa_slow_query` ( " +
+                "  `id` varchar(255) NOT NULL, " +
+                "  `gmt_create` datetime DEFAULT NULL, " +
+                "  `gmt_modified` datetime DEFAULT NULL, " +
+                "  `is_delete` datetime DEFAULT NULL, " +
+                "  `time` int(11) NOT NULL, " +
+                "  `sql` varchar(255) NOT NULL, " +
+                "  `method` varchar(255) DEFAULT NULL, " +
+                "  PRIMARY KEY (`id`), " +
+                "  UNIQUE KEY `key_id` (`id`) USING BTREE, " +
+                "  KEY `key_method` (`method`) USING BTREE, " +
+                "  KEY `key_time` (`time`) USING BTREE, " +
+                "  KEY `key_sql` (`sql`,`method`) USING BTREE " +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
+        try {
+            manager.createNativeQuery(sql).executeUpdate();
+        } catch (Exception e) {
+
+        }
+        sql = "CREATE TABLE `distributed_lock` (  " +
+                "  `id` varchar(100) CHARACTER SET utf8 NOT NULL,  " +
+                "  `keyword` varchar(255) CHARACTER SET utf8 DEFAULT NULL,  " +
+                "  `lock_time` datetime DEFAULT NULL,  " +
+                "  `gmt_create` datetime DEFAULT NULL,  " +
+                "  `gmt_modified` datetime DEFAULT NULL,  " +
+                "  `is_delete` tinyint(1) DEFAULT '0',  " +
+                "  PRIMARY KEY (`id`),  " +
+                "  UNIQUE KEY `key_id` (`id`) USING BTREE,  " +
+                "  UNIQUE KEY `key_unuque` (`keyword`) USING BTREE,  " +
+                "  KEY `key_lock_time` (`lock_time`) USING BTREE  " +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        try {
+            manager.createNativeQuery(sql).executeUpdate();
+        } catch (Exception e) {
+
+        }
 
     }
 

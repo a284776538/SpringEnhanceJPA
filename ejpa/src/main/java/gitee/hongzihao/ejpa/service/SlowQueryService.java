@@ -11,4 +11,6 @@ public interface SlowQueryService {
 
 
     void  delete();
+
+    void initSql();
 }

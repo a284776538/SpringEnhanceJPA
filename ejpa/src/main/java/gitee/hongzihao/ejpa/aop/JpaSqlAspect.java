@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -140,7 +141,12 @@ public class JpaSqlAspect {
 //            if(args[i]==null){
 //                continue;
 //            }
-            parameter.put(param.value(),args[i]);
+            if(args[i] instanceof Iterable ||
+                    ClassUtil.checkIsBasicsType(args[i].getClass()) ||
+                    args[i].getClass().getName().equals(Pageable.class.getName()) ){
+                parameter.put(param.value(),args[i]);
+            }
+
 //            if ( args[i] instanceof  Iterable){
 //                Iterable arrayParam = (Iterable) args[i];
 //

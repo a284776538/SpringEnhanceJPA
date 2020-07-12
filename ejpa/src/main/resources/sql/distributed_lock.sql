@@ -10,26 +10,24 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2020-07-12 16:13:52
+Date: 2020-07-12 16:13:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for ejpa_slow_query
+-- Table structure for distributed_lock
 -- ----------------------------
-DROP TABLE IF EXISTS `ejpa_slow_query`;
-CREATE TABLE `ejpa_slow_query` (
-  `id` varchar(255) NOT NULL,
+DROP TABLE IF EXISTS `distributed_lock`;
+CREATE TABLE `distributed_lock` (
+  `id` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `keyword` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `lock_time` datetime DEFAULT NULL,
   `gmt_create` datetime DEFAULT NULL,
   `gmt_modified` datetime DEFAULT NULL,
-  `is_delete` datetime DEFAULT NULL,
-  `time` int(11) NOT NULL,
-  `sql` varchar(255) NOT NULL,
-  `method` varchar(255) DEFAULT NULL,
+  `is_delete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `key_id` (`id`) USING BTREE,
-  KEY `key_method` (`method`) USING BTREE,
-  KEY `key_time` (`time`) USING BTREE,
-  KEY `key_sql` (`sql`,`method`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  UNIQUE KEY `key_unuque` (`keyword`) USING BTREE,
+  KEY `key_lock_time` (`lock_time`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

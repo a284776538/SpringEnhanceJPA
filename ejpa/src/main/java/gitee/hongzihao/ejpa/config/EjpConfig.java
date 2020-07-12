@@ -91,6 +91,10 @@ public class EjpConfig {
     @Lazy
     public JpaUpdateAspect getJpaUpdateAspect(){ return  new JpaUpdateAspect(); }
 
+//    @Bean
+//    @Lazy
+//    public MongodbJpaSqlAspect getMongodbJpaSqlAspect(){ return  new MongodbJpaSqlAspect(); }
+//
 
 
 }

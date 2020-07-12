@@ -168,7 +168,7 @@ public class GenerateIdUtil {
             //添加分布式锁
 //            isLock  = redisTemplate.opsForValue().setIfAbsent(lock,true,30, TimeUnit.SECONDS);
 
-            isLock  = mysqlService.lock(lock,3,1);
+            isLock  = mysqlService.lock(lock,3,1,false);
                     System.out.println(isLock+"");
             if(!isLock){
                 return false;

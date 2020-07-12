@@ -9,6 +9,7 @@ import gitee.hongzihao.ejpa.util.SpringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
@@ -31,6 +32,9 @@ public class EjpaRun  {
     @Lazy
     private MysqlService mysqlService;
 
+    @Value("${ejpa.open-lock}")
+    private boolean openLock;
+
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     public void run(String... args)  {
@@ -42,6 +46,7 @@ public class EjpaRun  {
             return;
         }
         try {
+            slowQueryService.initSql();
             deleteExpiredKey();
             deleteSlowLog();
         }catch (Exception e){
@@ -55,11 +60,16 @@ public class EjpaRun  {
      * 每5秒执行一次
      */
     private void deleteExpiredKey(){
+        if(!openLock){
+            mysqlService.deleteExpiredKey();
+            return;
+        }
         publicScheduled.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
                 try {
                     mysqlService.deleteExpiredKey();
+
                     System.out.println("deleteExpiredKey");
                 }catch (Exception e){
                     e.printStackTrace();
