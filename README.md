@@ -1,7 +1,7 @@
 # SpringEnhanceJPA
 
 #### 介绍
-本项目是真的JPA做的增强功能，所有依赖于Sping Data JPA，所有需要配置JPA才能使用
+本项目是针对JPA做的增强功能，所有依赖于Sping Data JPA，所有需要配置JPA才能使用
 EJPA是Spring data Jpa 一个增强工具，它解决了JPA无法自定义结果映射问题，没有动态sql，原生sql分页查询复杂，
 save会update Null字段等问题。它还提供了分布式ID生成策略，慢查询记录，分布式锁等功能。
 
